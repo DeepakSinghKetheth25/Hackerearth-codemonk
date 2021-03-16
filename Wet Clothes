@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+
+    int n,m,g;
+    cin>>n>>m>>g;
+
+    int rain_duration[n];
+
+    int clothes_duration[m];
+
+    for(int i=0;i<n;i++){
+        cin>>rain_duration[i];
+    }
+
+    for(int i=0;i<m;i++){
+        cin>>clothes_duration[i];
+    }
+
+    //Sort According to time taken by clothes to dry. bcoz we want to pick up max no of clothes.
+    sort(clothes_duration,clothes_duration+m);
+
+    //For every time gap check how many clothes we can pickup & maintain count of clothes for the same.
+    int k=0;int count=0;
+    for(int i=0;i<n-1;i++){
+        int time_gap = rain_duration[i+1] - rain_duration[i];
+        for(;k<m;k++){
+            if(clothes_duration[k]>time_gap)
+                break;
+            else
+                count++;
+        }
+    }
+    cout<<count;
+
+
+    return 0;
+}
