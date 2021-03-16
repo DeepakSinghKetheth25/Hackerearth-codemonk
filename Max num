@@ -1,0 +1,75 @@
+
+// Write your code here
+
+
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long 
+
+int main()
+{
+
+    int t; cin>>t;
+        
+    //Computed For Combination nCr.    
+    int C[31][31]; 
+ 
+        for (int i = 0; i <= 30; i++)  { 
+            for (int j = 0; j <= min(i, 30); j++) { 
+                if (j == 0 || j == i) 
+                    C[i][j] = 1; 
+                else
+                    C[i][j] = C[i - 1][j - 1] + C[i - 1][j]; 
+            } 
+        }
+
+    while(t--){
+
+        int n,l;
+        scanf("%d %d", &n, &l);
+
+        vector<int> countOfSetBits(31,0);// For storing Count of bits
+        map<ll,ll> valueOfBits; //For Storing the value added up by the count of bits 
+
+        vector<int> arr(n);
+
+        for(int i=0;i<n;i++){
+            scanf("%d", &arr[i]);
+            for(int j=0;j<31;j++){
+                if(((arr[i])&(1<<j))!=0){
+                    countOfSetBits[j]+=1;//Storing count of bits which are set at jth position
+                }
+            }
+        }
+
+        ll value;
+        for(int i=0;i<31;i++){
+            if(countOfSetBits[i]==0)
+                continue;
+            
+            value = (1<<i);
+            value*=countOfSetBits[i];
+            valueOfBits[value]++;//Storing the value added up by count of set bits
+        }
+
+        // Reverse iterating bcoz max value added(by any bit) is to be taken first to maximize the ans. 
+        ll ans = 1;
+        map<ll, ll>::reverse_iterator rit = valueOfBits.rbegin();
+        
+        for(;l>0 && rit!=valueOfBits.rend();rit++){
+            if(rit->second<=l)
+                l-=rit->second; 
+            else{
+                ans = C[rit->second][l];//If number of bits that we can set is greater than no of bits required(l), then we find the           
+                l=0;                  //combinations(of in how many ways we can set that bit).
+            }
+        }
+        if(l>0)
+            printf("-1\n");
+        else 
+            printf("%lld\n",ans);
+
+    } 
+
+    return 0;
+}
