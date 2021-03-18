@@ -1,0 +1,57 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+
+long long int arr[100001];
+int main(){
+
+    long long int n,x;
+    scanf("%lld %lld",&n,&x);
+
+
+
+    for(long long int i=0;i<n;i++){
+        scanf("%d",&arr[i]);
+    }
+
+    long long int start =0,end = n,ans=0; 
+    long long int sum = 0,mid;
+    while(start<=end){
+
+         mid = start + (end-start)/2;
+        sum = 0 ;
+
+        for(long long int i=0;i<mid;++i){
+            sum += arr[i];
+            if(sum>x)
+                {
+                    break;
+                }
+        }
+
+        if(sum<=x){
+            for(long long int j=mid;j<n;++j){
+                sum -= arr[j-mid];
+                sum += arr[j];
+                if(sum>x)
+                       break;
+            }
+        }
+
+        if(sum>x)
+        {   
+            end = mid-1;
+        }
+        else{
+            ans = mid;
+            start = mid+1;
+        }
+
+
+    }
+
+    cout<<ans<<"\n";
+
+    return 0;
+}
+
